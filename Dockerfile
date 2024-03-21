@@ -1,17 +1,17 @@
 # Description: Dockerfile for the Node.js application
-FROM node:latest
+FROM node:16
 
 # Create app directory
-WORKDIR /usr/src/app
+WORKDIR /usr/src/api
 
 # Copy package.json and package-lock.json
 COPY . .
 
 # Copy app environments
-# COPY ./.env.production ./.env
+COPY ./.env.production ./.env
 
 # Install app dependencies
-RUN npm install --quiet --no-optional --no-fund --loglevel=error
+RUN npm install --force --loglevel=error
 
 # Build the app
 RUN npm run build
