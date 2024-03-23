@@ -1,36 +1,24 @@
-# --- Estágio de Build com Node.js ---
-FROM node:16 as build-stage
+# Estágio de build
+FROM node:16 as build
 
-# Define o diretório de trabalho
-WORKDIR /usr/src/api
+WORKDIR /usr/src/app
 
-# Copia os arquivos de configuração do Node.js (package.json e package-lock.json)
 COPY package*.json ./
 
-# Instala as dependências
-RUN npm install --quiet --no-optional --no-fund --loglevel=error
+RUN npm install
 
-# Copia o restante dos arquivos da aplicação
 COPY . .
 
-# Copia o ambiente de produção
-COPY ./.env.production ./.env
-
-# Constrói a aplicação
 RUN npm run build
 
-# --- Estágio de Produção com Nginx ---
-FROM nginx:stable-alpine as production-stage
+# Estágio de execução
+FROM node:16-alpine
 
-# Copia os arquivos construídos da etapa anterior para o diretório do Nginx
-# Adapte o caminho /usr/src/api/build para onde sua aplicação é construída
-COPY --from=build-stage /usr/src/api/build /usr/share/nginx/html
+WORKDIR /usr/src/app
 
-# Copia o arquivo de configuração do Nginx, se necessário
-# Por exemplo, você pode ter um arquivo personalizado chamado `nginx.conf`
-# COPY nginx.conf /etc/nginx/nginx.conf
+COPY --from=build /usr/src/app/node_modules ./node_modules
+COPY --from=build /usr/src/app/dist ./dist
 
-# Expõe a porta 80 para o Nginx
-EXPOSE 80
+EXPOSE 3000
 
-# Nginx inicia automaticamente, então não é necessário CMD
+CMD ["node", "dist/main"]

@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  nestcoowork:
+    build: .
+    image: nestcoowork:latest
+    ports:
+      - "4000:3000"
+    environment:
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USERNAME: postgres
+      DB_PASSWORD: dias
+      DB_DATABASE: postgres
+    networks:
+      - coowork
+
+  postgres:
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: dias
+      POSTGRES_DB: postgres
+    ports:
+      - "5432:5432"
+    networks:
+      - coowork
+
+networks:
+  coowork:

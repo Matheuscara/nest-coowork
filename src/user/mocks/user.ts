@@ -1,0 +1,22 @@
+const bodyCreateUserMock = {
+  primeiro_nome: 'John',
+  ultimo_nome: 'Doe',
+  email: 'john.doe@example.com',
+  data_nascimento: '1990-01-01',
+  tipo_usuario: 'regular',
+  empresa: 'ACME Corp',
+  cpf: '123456789',
+  imagem: 'https://example.com/avatar.jpg',
+  telefone: '1234567890',
+  password: 'password123',
+  password_confirmation: 'password123',
+  endereco: {
+    rua: 'testes',
+    bairro: 'testes',
+    cep: 'testes',
+    cidade: 'testes',
+    pais: 'testes',
+    numero: '2',
+    complemento: 'testes',
+  },
+};

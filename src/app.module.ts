@@ -1,20 +1,24 @@
 import { Module } from '@nestjs/common';
 import { UserModule } from './user/user.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
     UserModule,
-    // TypeOrmModule.forRoot({
-    //   type: 'postgres',
-    //   host: 'localhost',
-    //   port: 5432,
-    //   username: 'dias',
-    //   password: 'dias',
-    //   database: 'nest_coowork',
-    //   autoLoadEntities: true,
-    //   synchronize: true,
-    // }),
+    ConfigModule.forRoot({
+      isGlobal: true, // Torna o módulo disponível globalmente
+    }),
+    TypeOrmModule.forRoot({
+      type: 'postgres',
+      host: process.env.DB_HOST, // 'postgres'
+      port: +process.env.DB_PORT, // 5432
+      username: process.env.DB_USERNAME, // 'postgres'
+      password: process.env.DB_PASSWORD, // 'dias'
+      database: process.env.DB_DATABASE, // 'postgres'
+      autoLoadEntities: true,
+      synchronize: true,
+    }),
     UserModule,
   ],
   controllers: [],
