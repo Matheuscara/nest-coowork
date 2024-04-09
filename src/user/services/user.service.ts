@@ -13,24 +13,7 @@ export class UserService {
   ) {}
 
   async createUser(body) {
-    // Create endereco
-    const { endereco, password_confirmation, ...user } = body;
-
-    const EnderecoEntity = new Endereco_user();
-
-    Object.assign(EnderecoEntity, endereco);
-
-    const resultEndereco =
-      await this.endereco_userRepository.save(EnderecoEntity);
-
-    // Create User with endereco
-    const UserEntity = new User();
-
-    Object.assign(UserEntity, user);
-
-    UserEntity.endereco = resultEndereco;
-
-    return await this.userRepository.save(UserEntity);
+    return await this.userRepository.save(body);
   }
 
   async findOne(options) {

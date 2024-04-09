@@ -9,3 +9,12 @@ Este projeto NestJS é uma plataforma inovadora de coworking, desenvolvida para 
 - Validação Robusta: Utilização do Class Validator para garantir a qualidade dos dados.
 - Gerenciamento Eficiente de Dados: Uso do TypeORM para operações de banco de dados.
 - Dockerização: Implementação com Docker para facilidade de deploy e desenvolvimento.
+
+# Criar banco de dados localmente
+
+docker run --name coowork-banco \
+    -e POSTGRES_PASSWORD=dias \
+    -e POSTGRES_USER=postgres \
+    -e POSTGRES_DB=postgres \
+    -p 5432:5432 \
+    -d postgres

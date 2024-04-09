@@ -3,14 +3,9 @@ import {
   IsEmail,
   IsNotEmpty,
   IsDateString,
-  IsDefined,
-  IsNotEmptyObject,
-  IsObject,
-  ValidateNested,
+  IsOptional,
 } from '@nestjs/class-validator';
-import { Type } from 'class-transformer';
 import { IsEqualTo } from 'src/utils/class_validators/IsEqualTo.validator';
-import { EnderecoDto } from './endereco.dto';
 
 export class CreateUserDto {
   @IsNotEmpty()
@@ -29,21 +24,18 @@ export class CreateUserDto {
   @IsDateString()
   data_nascimento: string;
 
-  @IsNotEmpty()
-  @IsString()
+  @IsOptional()
   tipo_usuario: string;
 
-  @IsNotEmpty()
-  @IsString()
-  empresa: string;
+  @IsOptional()
+  empresa?: string;
 
   @IsNotEmpty()
   @IsString()
   cpf: string;
 
-  @IsNotEmpty()
-  @IsString()
-  imagem: string;
+  @IsOptional()
+  imagem?: string;
 
   @IsNotEmpty()
   @IsString()
@@ -58,11 +50,10 @@ export class CreateUserDto {
   @IsEqualTo('password', { message: 'Confirm Password must match Password' })
   password_confirmation: string;
 
-  @IsDefined()
-  @IsNotEmptyObject()
-  @IsObject()
-  @ValidateNested()
-  @Type(() => EnderecoDto)
-  endereco: EnderecoDto;
+  // @IsDefined()
+  // @IsNotEmptyObject()
+  // @IsObject()
+  // @ValidateNested()
+  // @Type(() => EnderecoDto)
+  // endereco: EnderecoDto;
 }
-

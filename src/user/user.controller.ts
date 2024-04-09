@@ -1,6 +1,7 @@
 import {
   Controller,
   Post,
+  Get,
   Body,
   BadRequestException,
   Res,
@@ -23,6 +24,36 @@ export class UserController {
     private readonly tokenService: TokenService,
   ) {}
 
+  @Get()
+  async user(@Req() request: Request) {
+    try {
+      const accessToken = request.headers.authorization.split(' ')[1];
+
+      const { id } = await this.jwtService.verifyAsync(accessToken);
+
+      const { password, endereco, ...result } = await this.userService.findOne({
+        where: { id: id },
+      });
+
+      return result;
+    } catch (e) {
+      throw new UnauthorizedException('Invalid token');
+    }
+  }
+
+  @Get('token')
+  async validToken(@Req() request: Request) {
+    try {
+      const accessToken = request.headers.authorization.split(' ')[1];
+
+      await this.jwtService.verifyAsync(accessToken);
+
+      return { message: 'User is authorized' };
+    } catch (e) {
+      throw new UnauthorizedException('Invalid token');
+    }
+  }
+
   @Post()
   async create(@Body() createUserDto: CreateUserDto) {
     const userExist = await this.userService.findOne({
@@ -34,6 +65,9 @@ export class UserController {
     }
 
     createUserDto.password = await bcrypt.hash(createUserDto.password, 12);
+    createUserDto.imagem = '';
+    createUserDto.empresa = createUserDto?.empresa || null;
+    createUserDto.tipo_usuario = 'user';
 
     const { password, ...user } =
       await this.userService.createUser(createUserDto);
